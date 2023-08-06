@@ -2,17 +2,32 @@ import json, os, joblib
 import numpy as np
 
 def init():
-    # Loads the model
+    # Logs are helpful for diagnostics. Azure ML captures logs from the print function.
+    print("Initializing model...")
     global model
     model_name = "model.pkl"
-    # AZURE_MODEL_DIR is an Azure environment variable where scripts are stored in the cloud and should not be changed
     model_path = os.path.join(os.getenv("AZUREML_MODEL_DIR"), model_name)
     model = joblib.load(model_path)
+    print("Model initialized!")
 
 def run(request):
-    # Loads the input data, runs the model on it, and returns its predictions
-    data = json.loads(request)
-    data = np.array(data["data"])
-    result = model.predict(data)
-    # Return the regression prediction results directly
-    return result.tolist()
+    try:
+        # Parsing the request data
+        data = json.loads(request)
+        
+        if "data" not in data:
+            return {"error": "Invalid input. 'data' key is missing."}
+
+        input_data = np.array(data["data"])
+
+        # Making predictions
+        result = model.predict(input_data)
+        
+        # Return the regression prediction results
+        return result.tolist()
+
+    except Exception as e:
+        # Handle any type of error and return a descriptive message.
+        error_message = f"An error occurred: {str(e)}"
+        print(error_message)
+        return {"error": error_message}
