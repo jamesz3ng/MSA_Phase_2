@@ -1,2 +1,4 @@
-# Phase_2_Market_Segementation
- 
+## Microsoft accelerators programme
+
+- Summaries are included at the end of each notebook
+
