@@ -32,9 +32,9 @@ run.log('max_depth',  np.float(args.max_depth) if args.max_depth else 'None')
 print("Loading Data...")
 segmentation_data = run.input_datasets['training_data'].to_pandas_dataframe()
 
-# Separate features and labels NEED TO EDIT THIS
-X = segmentation_data.drop('Segment', axis=1)
-y = segmentation_data['Segment']
+# Separate features and labels
+X = segmentation_data.drop("Segmentation_A", "Segmentation_B", "Segmentation_C", "Segmentation_D", axis=1)
+y = segmentation_data["Segmentation_A", "Segmentation_B", "Segmentation_C", "Segmentation_D"]
 
 # Split data into training set and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
